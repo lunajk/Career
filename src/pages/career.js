@@ -9,8 +9,6 @@ import {
   Button,
   Box,
   LinearProgress,
-  Checkbox,
-  FormControlLabel,
   Divider,
 } from "@mui/material";
 import {
@@ -18,39 +16,13 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
-  List,
-  ListItem,
-  ListItemText,
 } from "@mui/material";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import SchoolIcon from "@mui/icons-material/School";
-import EventIcon from "@mui/icons-material/Event";
 import TimerIcon from "@mui/icons-material/Timer";
 import TrackChangesIcon from "@mui/icons-material/TrackChanges";
 
 import { motion } from "framer-motion";
-const MotionPaper = ({ children, sx = {} }) => (
-  <motion.div
-    whileHover={{
-      scale: 1.02,
-      y: -5,
-    }}
-    transition={{ duration: 0.3 }}
-  >
-    <Paper
-      sx={{
-        background: "rgba(255,255,255,0.05)",
-        backdropFilter: "blur(15px)",
-        border: "1px solid rgba(255,255,255,0.1)",
-        borderRadius: "24px",
-        color: "white",
-        ...sx,
-      }}
-    >
-      {children}
-    </Paper>
-  </motion.div>
-);
+
 function App() {
   // ---------------- SUBJECTS ----------------
 const [subjectDialogOpen, setSubjectDialogOpen] =
@@ -66,7 +38,7 @@ const [examDialogOpen, setExamDialogOpen] =
   const [subjectName, setSubjectName] = useState("");
   const [totalChapters, setTotalChapters] = useState("");
   const [completedChapters, setCompletedChapters] = useState("");
-const [openGoalsDialog, setOpenGoalsDialog] =
+const [setOpenGoalsDialog] =
   useState(false);
   const [subjects, setSubjects] = useState(
     JSON.parse(localStorage.getItem("subjects")) || []
@@ -199,20 +171,6 @@ const [openGoalsDialog, setOpenGoalsDialog] =
     setGoalText("");
   };
 
-  // ---------------- TOGGLE GOAL ----------------
-
-  const toggleGoal = (id) => {
-    setGoals(
-      goals.map((goal) =>
-        goal.id === id
-          ? {
-              ...goal,
-              completed: !goal.completed,
-            }
-          : goal
-      )
-    );
-  };
 // ---------------- DELETE SUBJECT ----------------
 
 const deleteSubject = (id) => {
@@ -233,15 +191,6 @@ const deleteExam = (id) => {
   );
 };
 
-// ---------------- DELETE GOAL ----------------
-
-const deleteGoal = (id) => {
-  setGoals(
-    goals.filter(
-      (goal) => goal.id !== id
-    )
-  );
-};
   // ---------------- STREAK ----------------
 
   const markStudied = () => {

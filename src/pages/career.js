@@ -38,7 +38,7 @@ const [examDialogOpen, setExamDialogOpen] =
   const [subjectName, setSubjectName] = useState("");
   const [totalChapters, setTotalChapters] = useState("");
   const [completedChapters, setCompletedChapters] = useState("");
-const [setOpenGoalsDialog] =
+const [openGoalsDialog, setOpenGoalsDialog] =
   useState(false);
   const [subjects, setSubjects] = useState(
     JSON.parse(localStorage.getItem("subjects")) || []
@@ -171,6 +171,20 @@ const [setOpenGoalsDialog] =
     setGoalText("");
   };
 
+  // ---------------- TOGGLE GOAL ----------------
+
+  const toggleGoal = (id) => {
+    setGoals(
+      goals.map((goal) =>
+        goal.id === id
+          ? {
+              ...goal,
+              completed: !goal.completed,
+            }
+          : goal
+      )
+    );
+  };
 // ---------------- DELETE SUBJECT ----------------
 
 const deleteSubject = (id) => {
@@ -191,6 +205,15 @@ const deleteExam = (id) => {
   );
 };
 
+// ---------------- DELETE GOAL ----------------
+
+const deleteGoal = (id) => {
+  setGoals(
+    goals.filter(
+      (goal) => goal.id !== id
+    )
+  );
+};
   // ---------------- STREAK ----------------
 
   const markStudied = () => {
@@ -1379,6 +1402,89 @@ const inputStyle = {
       }}
     >
       Add Goal
+    </Button>
+  </DialogActions>
+</Dialog>
+<Dialog
+  open={openGoalsDialog}
+  onClose={() => setOpenGoalsDialog(false)}
+  maxWidth="sm"
+  fullWidth
+  PaperProps={{
+    sx: dialogStyle,
+  }}
+>
+  <DialogTitle sx={dialogTitleStyle}>
+    🎯 My Goals
+  </DialogTitle>
+
+  <DialogContent sx={dialogContentStyle}>
+    {goals.length === 0 ? (
+      <Typography color="gray">
+        No goals added yet.
+      </Typography>
+    ) : (
+      goals.map((goal) => (
+        <Box
+          key={goal.id}
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            p: 2,
+            mb: 2,
+            borderRadius: "14px",
+            background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.08)",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <input
+              type="checkbox"
+              checked={goal.completed}
+              onChange={() => toggleGoal(goal.id)}
+            />
+
+            <Typography
+              sx={{
+                textDecoration: goal.completed
+                  ? "line-through"
+                  : "none",
+                color: goal.completed
+                  ? "#4ADE80"
+                  : "white",
+                fontWeight: 500,
+              }}
+            >
+              {goal.text}
+            </Typography>
+          </Box>
+
+          <Button
+            size="small"
+            color="error"
+            variant="outlined"
+            onClick={() => deleteGoal(goal.id)}
+          >
+            Delete
+          </Button>
+        </Box>
+      ))
+    )}
+  </DialogContent>
+
+  <DialogActions sx={dialogActionsStyle}>
+    <Button
+      sx={dialogButtonStyle}
+      onClick={() => setOpenGoalsDialog(false)}
+    >
+      Close
     </Button>
   </DialogActions>
 </Dialog>
